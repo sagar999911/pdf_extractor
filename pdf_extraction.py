@@ -1,17 +1,19 @@
 """Code for extracting HDFC bank monthly statement pdf file data from first page"""
 import pdfplumber
 
-pdf_name = 'montly_statement.pdf'
+pdf_name = 'monthly_statement.pdf'
 with pdfplumber.open(pdf_name) as pdf:
     """Getting texts like Customer Name and Address"""
     page = pdf.pages[0]
     cust_details = page.extract_text()
-    # print(text)
+    # print(cust_details)
     cust_details = cust_details.split('\n')
-    # print(newtext)
-    pin_code = cust_details[15].split()
-    pin_code = pin_code[0]
-    print(f"Customer Name: {cust_details[4]}\nAddress: {cust_details[6]}, {cust_details[10]}, {cust_details[12]}, {pin_code}")
+    # print(cust_details)
+
+    for i in cust_details:
+        if i.startswith(('MR','H ')):
+            name_addr = i[0:]
+            print(name_addr)
 
     """Extracting first two Transactions with all details from table"""
     print('----First two Transactions-----')
